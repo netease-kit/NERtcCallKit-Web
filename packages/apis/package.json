@@ -1,0 +1,32 @@
+{
+  "author": "",
+  "description": "",
+  "files": [
+    "lib",
+    "assets"
+  ],
+  "keywords": [],
+  "license": "ISC",
+  "main": "lib/index.umd.js",
+  "module": "lib/index.esm.js",
+  "typings": "lib/types/index.d.ts",
+  "name": "@yunxin-sdk-component/apis",
+  "private": false,
+  "scripts": {
+    "dev": "rm -rf ./lib && rollup -c --environment DEV",
+    "build": "rm -rf ./lib && rollup -c",
+    "prepare": "npm run build"
+  },
+  "version": "0.0.0",
+  "dependencies": {
+    "eventemitter3": "^4.0.7"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^10.0.0",
+    "rollup": "^2.33.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.0.3"
+  }
+}
