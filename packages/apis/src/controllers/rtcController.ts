@@ -32,6 +32,9 @@ class RTCController extends BaseController implements RTCControllerTypes {
   private audioEnabled = false; // 音频是否激活
   private videoEnabled = false; // 视频是否激活
   private getTokenFunc: ((uid: string) => Promise<string>) | null = null; // 获取token的异步函数
+  private resolution: SetupParams['resolution'] = 8; // 视频分辨率
+  private frameRate: SetupParams['frameRate'] = 3; // 视频帧率
+  private quality: SetupParams['quality'] = 'speech_low_quality'; // 音频质量
 
   constructor(options: BaseOptions) {
     super(options);
@@ -41,7 +44,12 @@ class RTCController extends BaseController implements RTCControllerTypes {
    * 初始化G2
    * @param params
    */
-  public setupAppKey({ appKey }: SetupParams): void {
+  public setupAppKey({
+    appKey,
+    resolution,
+    frameRate,
+    quality,
+  }: SetupParams): void {
     if (this.client) {
       return;
     }
@@ -51,6 +59,15 @@ class RTCController extends BaseController implements RTCControllerTypes {
       appkey: this.appKey,
       debug: this.debug,
     });
+    if (resolution) {
+      this.resolution = resolution;
+    }
+    if (frameRate) {
+      this.frameRate = frameRate;
+    }
+    if (quality) {
+      this.quality = quality;
+    }
     this.log('setupAppKey success');
   }
 
@@ -291,11 +308,11 @@ class RTCController extends BaseController implements RTCControllerTypes {
 
       // 设置本地视频质量
       this.localStream.setVideoProfile({
-        resolution: WebRTC2.VIDEO_QUALITY_720p, //设置视频分辨率
-        frameRate: WebRTC2.CHAT_VIDEO_FRAME_RATE_15, //设置视频帧率
+        resolution: this.resolution, //设置视频分辨率
+        frameRate: this.frameRate, //设置视频帧率
       });
       // 设置本地音频质量
-      this.localStream.setAudioProfile('speech_low_quality');
+      this.localStream.setAudioProfile(this.quality);
       // 启动媒体，打开实例对象中设置的媒体设备
       await this.localStream.init();
       // this.localStreamInit = true;
